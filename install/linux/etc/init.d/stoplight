@@ -1,0 +1,25 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          stoplight
+# Required-Start:    $openvpn $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: stoplight
+# Description:       Controls a USB stoplight as a Jenkins extreme feedback device.
+### END INIT INFO
+
+case $1 in
+    start)
+        sleep 15;
+        /bin/bash /usr/local/bin/stoplight-start.sh
+    ;;
+    stop)
+        /bin/bash /usr/local/bin/stoplight-stop.sh
+    ;;
+    restart)
+        /bin/bash /usr/local/bin/stoplight-stop.sh
+        /bin/bash /usr/local/bin/stoplight-start.sh
+    ;;
+esac
+exit 0

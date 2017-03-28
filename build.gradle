@@ -1,0 +1,69 @@
+plugins {
+    id 'org.hidetake.ssh' version '2.8.0'
+}
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'jacoco'
+
+repositories {
+    jcenter()
+}
+
+repositories {
+    mavenCentral()
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+
+dependencies {
+    //compile group: 'com.codeminders', name: 'com.codeminders.hidapi-armhf', version: '1.0'
+    compile group: 'org.apache.commons', name: 'commons-exec', version: '1.3'
+    compile group: 'com.comsysto.buildlight', name: 'cleware-driver', version: '1.0'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.innotas.xfd.stoplight.StoplightController'
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Stoplight Controller',
+                //'Implementation-Version': version,
+                'Main-Class': 'com.innotas.xfd.stoplight.StoplightController'
+    }
+    baseName = project.name + '-all'
+    from zipTree('lib/linux/com.codeminders.hidapi-armhf-1.0.jar')
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it).matching { exclude 'com/codeminders/hidapi/**/*' } } }
+    with jar
+}
+
+task copyDeps(type: Copy) {
+    from configurations.compile
+    into 'build/libs'
+}
+
+remotes {
+    stoplightServer {
+        host = 'stoplight'
+        //host = '192.168.150.27'
+        user = 'pi'
+        identity = file('c:/dev/system/cygwin/home/jstokes/.ssh/id_rsa')
+    }
+}
+
+task deploy {
+    doLast {
+        ssh.run {
+            session(remotes.stoplightServer) {
+                put from: 'build/libs/jenkins_xfd-all.jar', into: '/tmp'
+                execute 'sudo mv /tmp/jenkins_xfd-all.jar /usr/share/java/jenkins_xfd-all.jar; sudo service stoplight restart'
+            }
+        }
+    }
+}
+deploy.dependsOn = [fatJar]
