@@ -1,5 +1,7 @@
 # Raspberry Pi Stoplight Installation
 
+These steps describe how to set up a brand new Raspberry Pi as a Stoplight controller.
+
 1. Get a MicroSD card with NOOBS on it.
     1.	Apparently you can buy MicroSD cards with NOOBS pre-installed on it.  I didn’t do this, INSTEAD, I did:
     1.	Format a MicroSD card and copy NOOBS files to it:
