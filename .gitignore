@@ -1,2 +1,5 @@
 *.iws
 *.log
+build/
+out/
+.gradle/
