@@ -21,6 +21,7 @@ public class JenkinsProjectColorTest {
         assertFalse(JenkinsProjectColor.RED.isBuilding());
         assertTrue(JenkinsProjectColor.BLUE_ANIME.isBuilding());
         assertTrue(JenkinsProjectColor.ABORTED_ANIME.isBuilding());
+        assertTrue(JenkinsProjectColor.DISABLED_ANIME.isBuilding());
         assertTrue(JenkinsProjectColor.YELLOW_ANIME.isBuilding());
         assertTrue(JenkinsProjectColor.RED_ANIME.isBuilding());
     }
@@ -30,6 +31,7 @@ public class JenkinsProjectColorTest {
         assertFalse(JenkinsProjectColor.BLUE.isFailing());
         assertFalse(JenkinsProjectColor.BLUE_ANIME.isFailing());
         assertFalse(JenkinsProjectColor.DISABLED.isFailing());
+        assertFalse(JenkinsProjectColor.DISABLED_ANIME.isFailing());
         assertTrue(JenkinsProjectColor.ABORTED.isFailing());  // not sure about this.
         assertTrue(JenkinsProjectColor.ABORTED_ANIME.isFailing()); // not sure about this.
         assertTrue(JenkinsProjectColor.YELLOW.isFailing());
@@ -39,8 +41,22 @@ public class JenkinsProjectColorTest {
     }
 
     @Test
+    public void testIsDisabled() throws Exception {
+        assertFalse(JenkinsProjectColor.BLUE.isDisabled());
+        assertFalse(JenkinsProjectColor.BLUE_ANIME.isDisabled());
+        assertTrue(JenkinsProjectColor.DISABLED.isDisabled());
+        assertTrue(JenkinsProjectColor.DISABLED_ANIME.isDisabled());
+        assertFalse(JenkinsProjectColor.ABORTED.isDisabled());
+        assertFalse(JenkinsProjectColor.ABORTED_ANIME.isDisabled());
+        assertFalse(JenkinsProjectColor.YELLOW.isDisabled());
+        assertFalse(JenkinsProjectColor.YELLOW_ANIME.isDisabled());
+        assertFalse(JenkinsProjectColor.RED.isDisabled());
+        assertFalse(JenkinsProjectColor.RED_ANIME.isDisabled());
+    }
+
+    @Test
     public void testValueOf() throws Exception {
-        String[] jenkinsStatusValues = new String[] {"blue", "blue_anime", "aborted", "aborted_anime", "disabled", "yellow", "yellow_anime", "red", "red_anime"};
+        String[] jenkinsStatusValues = new String[] {"blue", "blue_anime", "aborted", "aborted_anime", "disabled", "disabled_anime", "yellow", "yellow_anime", "red", "red_anime"};
         Set<JenkinsProjectColor> foundEnumValues = new HashSet<>();
         for (String jenkinsStatus : jenkinsStatusValues) {
             JenkinsProjectColor enumValue = JenkinsProjectColor.valueOf(jenkinsStatus.toUpperCase());

@@ -93,7 +93,7 @@ public class JenkinsProject {
     /** Translates a Jenkins color value into a completion status value. */
     protected CompletionStatus convertJenkinsColorToCompletionState(JenkinsProjectColor color) {
         if (color == JenkinsProjectColor.BLUE || color == JenkinsProjectColor.BLUE_ANIME) return CompletionStatus.SUCCESS;
-        else if (color == JenkinsProjectColor.DISABLED) return CompletionStatus.DISABLED;
+        else if (color.isDisabled()) return CompletionStatus.DISABLED;
         else if (color == JenkinsProjectColor.ABORTED || color == JenkinsProjectColor.ABORTED_ANIME) return CompletionStatus.TEST_FAILURE; // what else?
         else if (color == JenkinsProjectColor.YELLOW || color == JenkinsProjectColor.YELLOW_ANIME) return CompletionStatus.TEST_FAILURE;
         else if (color == JenkinsProjectColor.RED || color == JenkinsProjectColor.RED_ANIME) return CompletionStatus.FAILURE;

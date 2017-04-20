@@ -12,6 +12,7 @@ public enum JenkinsProjectColor {
     BLUE,
     BLUE_ANIME,
     DISABLED,
+    DISABLED_ANIME,
     ABORTED,
     ABORTED_ANIME,
     YELLOW,
@@ -27,6 +28,11 @@ public enum JenkinsProjectColor {
 
     /** Determines if the current color indicates a failing job. */
     public boolean isFailing() {
-        return this != DISABLED && this != BLUE && this != BLUE_ANIME;
+        return !isDisabled() && this != BLUE && this != BLUE_ANIME;
+    }
+
+    /** Determines if the current color indicates a disabled job. */
+    public boolean isDisabled() {
+        return this == DISABLED || this == DISABLED_ANIME;
     }
 }
