@@ -1,7 +1,9 @@
 package com.innotas.xfd.jenkins;
 
+import com.innotas.xfd.CompletionStatus;
 import com.innotas.xfd.ContinuousIntegrationProjectSet;
 import com.innotas.xfd.ContinuousIntegrationProjectState;
+import com.innotas.xfd.RunningStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -53,6 +55,7 @@ public class JenkinsProjectSet implements ContinuousIntegrationProjectSet {
             ContinuousIntegrationProjectState projectState = project.fetchState(projectColor);
             jenkinsViewState = (jenkinsViewState != null ? jenkinsViewState.accumulateState(projectState) : projectState);
         }
+        if (jenkinsViewState == null) jenkinsViewState = new ContinuousIntegrationProjectState(CompletionStatus.DISABLED, RunningStatus.NOT_RUNNING);
         return jenkinsViewState;
     }
 }
