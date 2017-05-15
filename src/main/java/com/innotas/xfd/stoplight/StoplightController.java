@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * The main MVC controller class interacting with the Jenkins state (data) and reflecting it on the stoplight (view).
@@ -160,6 +161,8 @@ public class StoplightController {
         LOGGER.info("Starting Stoplight controller polling of two Jenkins views:");
         LOGGER.info("    High priority: " + jenkinsHighPriorityViewUrl);
         LOGGER.info("  Medium priority: " + jenkinsMediumPriorityViewUrl);
+        System.err.println("Starting Stoplight controller at " + new Date() + ".");
+        System.out.println("Starting Stoplight controller at " + new Date() + ".");
     }
 
     /**
