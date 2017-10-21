@@ -26,7 +26,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.innotas.xfd.stoplight.StoplightController'
+        attributes 'Main-Class': 'StoplightController'
     }
 }
 
@@ -34,7 +34,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Stoplight Controller',
                 //'Implementation-Version': version,
-                'Main-Class': 'com.innotas.xfd.stoplight.StoplightController'
+                'Main-Class': 'StoplightController'
     }
     baseName = project.name + '-all'
     from zipTree('lib/linux/com.codeminders.hidapi-armhf-1.0.jar')

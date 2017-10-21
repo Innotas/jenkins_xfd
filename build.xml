@@ -26,7 +26,7 @@
         <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
         <jar jarfile="${dist}/lib/jenkins_xfd-${DSTAMP}.jar" basedir="${build}/classes">
             <manifest>
-                <attribute name="Main-Class" value="com.innotas.xfd.stoplight.StoplightController"/>
+                <attribute name="Main-Class" value="com.teratory.xfd.stoplight.StoplightController"/>
             </manifest>
         </jar>
     </target>
