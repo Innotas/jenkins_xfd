@@ -1,11 +1,17 @@
 # jenkins_xfd
-Jenkins Stoplight eXtreme Feedback Device
+Jenkins Stoplight eXtreme Feedback Device - A set of status indicator lights, in the form of a stoplight, controlled
+by a Raspberry Pi, to monitor the current state of a continuous build system running Jenkins.
+ 
+It could certainly be adapted to control other status indicators, and to monitor other build systems. This project is
+for the software that is monitoring Jenkins and controlling the lights.
 
 ## How to Build
 
 Compile and create a single Jar that includes all dependencies using:
 
 `./gradlew fatJar`
+
+That Jar can be deployed to a Raspberry Pi with USB light controls. 
 
 ## How to Deploy
 
