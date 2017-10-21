@@ -39,8 +39,13 @@ public class StoplightController {
 
     /** The main method of this class. */
     public static void main(String[] args) throws IOException {
-        URL highPriorityJenkinsView = new URL("http://ci1s2.innotas.net/jenkins/view/Priority-High/");
-        URL mediumPriorityJenkinsView = new URL("http://ci1s2.innotas.net/jenkins/view/Priority-Medium/");
+        // These Innotas-specific default values will only work from within the Innotas dev VPN.
+        String baseUrl = args.length > 0 ? args[0] : "http://ci1s2.innotas.net/jenkins/";
+        String highPriorityViewUrlSuffix = args.length > 1 ? args[1] : "view/Priority-High/";
+        String mediumPriorityViewUrlSuffix = args.length > 2 ? args[2] : "view/Priority-Medium/";
+
+        URL highPriorityJenkinsView = new URL(baseUrl + highPriorityViewUrlSuffix);
+        URL mediumPriorityJenkinsView = new URL(baseUrl + mediumPriorityViewUrlSuffix);
 
         TrafficLight driver = createTrafficLightDriver();
         try (Stoplight stoplight = new Stoplight(driver)) {
