@@ -1,7 +1,7 @@
 # Jenkins Stoplight eXtreme Feedback Device (Jenkins XFD)
 
-A set of status indicator lights, in the form of a stoplight, controlled
-by a Raspberry Pi, to monitor the current state of a continuous build system running Jenkins.
+A set of status indicator lights, in the form of a stoplight, controlled by a Raspberry Pi, to monitor the current state 
+of a continuous build system running Jenkins.
 
 ![Stoplight Red Green](doc/stoplight_photo_red_green_scaled.jpg?raw=true "High-priority builds are broken!") ![Stoplight Red Yellow](doc/stoplight_photo_red_yellow_scaled.jpg?raw=true "All builds are broken!")
 
@@ -50,10 +50,14 @@ That will create `build/libs/jenkins_xfd-all.jar`, which can be deployed to a Ra
 
 ### How to Deploy
 
-The complete Jar file can be simply copied to the Raspberry Pi (or test VM!) manually. However, for iterative 
+The complete Jar file can be simply copied to the Raspberry Pi (or test VM!) manually, usually from 
+`build/libs/jenkins_xfd-all.jar` to `/usr/share/java/` on the target machine. However, for iterative 
 development it may be more convenient to configure Gradle to deploy directly to your target host.
 
-We need to have some build properties that specify where the remote device is and how to connect and authenticate, but currently it's hardcoded in build.gradle.
+#### Setting Up the Gradle `deploy` Task
+
+_TODO: We need to have some build properties that specify where the remote device is and how to connect and authenticate, but 
+currently it's hardcoded in build.gradle._
 
 First, set up passwordless access to the `pi@stoplight` machine (or whatever `username@hostname` it's called on your network), with something like `cat ~/.ssh/id_rsa.pub | ssh pi@stoplight 'cat >> .ssh/authorized_keys'`.
 
