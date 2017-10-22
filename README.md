@@ -1,23 +1,61 @@
-# jenkins_xfd
-Jenkins Stoplight eXtreme Feedback Device - A set of status indicator lights, in the form of a stoplight, controlled
+# Jenkins Stoplight eXtreme Feedback Device (Jenkins XFD)
+
+A set of status indicator lights, in the form of a stoplight, controlled
 by a Raspberry Pi, to monitor the current state of a continuous build system running Jenkins.
- 
-It could certainly be adapted to control other status indicators, and to monitor other build systems. This project is
-for the software that is monitoring Jenkins and controlling the lights.
 
-## How to Build
+![Stoplight Red Green](doc/stoplight_photo_red_green_scaled.jpg?raw=true "High-priority builds are broken!") ![Stoplight Red Yellow](doc/stoplight_photo_red_yellow_scaled.jpg?raw=true "All builds are broken!")
 
-Compile and create a single Jar that includes all dependencies using:
+It could certainly be adapted to control other status indicators, and to monitor other build systems. This repository is
+for the software that monitors Jenkins and controlling the lights.
+
+## How it Works
+
+![Architecture Diagram](doc/architecture_diagram.png?raw=true "Architecture Diagram")
+
+Once configured, the stoplight sits on a desk or prominent place and shows the real-time status of your most important
+(and separately your less important) continuous integration builds, 24/7 non-stop.  No PC is required.  The Raspberry
+Pi controller connects via wifi or wired ethernet connection to monitor the state of your build system. 
+
+## I Want One! What Do I Need?
+
+To build your own extreme feedback device, you'll need a light and a Raspberry Pi to control it. My specific products
+ordered:   
+
+- A [USB Traffic Light](https://shop.strato.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F43%2FSubProducts%2F43-2) from cleware.de. This was the most expensive piece. I chose this model because (a) it's well built and had the look that I wanted, and (b) at the time I specifically wanted to learn to control devices via USB using Java. You can definitely build your own for cheaper, like using the GPIO to control individual LEDs or relays.   
+- A [Raspberry Pi with Enclosure](https://www.amazon.com/gp/product/B01DMFQZXK/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) from amazon.com. These Vilros kits are great about coming with a complete kit, everything you need (including power supply) except an SD card.
+- [8GB MicroSD Card](https://www.amazon.com/gp/product/B007KFXICK/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1), also from amazon.com. You can also get one [with NOOBS already installed](https://www.amazon.com/gp/product/B00VD614PU/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1) to save a step.
+
+## Setting Up the Raspberry Pi
+
+The controller service built by this repository runs as a Java process, so the only hard requirement is that the 
+Raspberry Pi have a Java VM. Most Raspberry Pis run some flavor of Linux, but it could technically be Windows 10 IoT or
+[any other Raspberry OS](https://www.raspberrypi.org/downloads/).
+
+The exact steps I used to set up the initial device are recorded in the 
+[Raspberry Pi Stoplight Installation](doc/INSTALL.md) guide, from installing the operating system to setting up the 
+Linux service to auto-start when booted.
+
+## Building and Deploying This Software
+
+This project can be built and tested on any development machine (any platform supported by Gradle) and then deployed to 
+a Raspberry Pi.   
+
+### How to Build
+
+Compile and create a single distributable Jar that includes all dependencies using:
 
 `./gradlew fatJar`
 
-That Jar can be deployed to a Raspberry Pi with USB light controls. 
+That will create `build/libs/jenkins_xfd-all.jar`, which can be deployed to a Raspberry Pi with USB light controls. 
 
-## How to Deploy
+### How to Deploy
+
+The complete Jar file can be simply copied to the Raspberry Pi (or test VM!) manually. However, for iterative 
+development it may be more convenient to configure Gradle to deploy directly to your target host.
 
 We need to have some build properties that specify where the remote device is and how to connect and authenticate, but currently it's hardcoded in build.gradle.
 
-First, set up passwordless access to the pi@stoplight machine (or whatever it's called on your network), with something like `cat ~/.ssh/id_rsa.pub | ssh pi@stoplight 'cat >> .ssh/authorized_keys'`.
+First, set up passwordless access to the `pi@stoplight` machine (or whatever `username@hostname` it's called on your network), with something like `cat ~/.ssh/id_rsa.pub | ssh pi@stoplight 'cat >> .ssh/authorized_keys'`.
 
 Then check the `remotes` section of `build.gradle`.  It should look something like:
 
@@ -35,17 +73,9 @@ Second, run the build to deploy to this target.
 
     ./gradlew deploy
 
-TODO: When this works, it's often hanging on the client side.
+Note: This build task is often hanging on the client side on Windows machines, even though it successfully deploys.
 
-## ToDo
+## Additional Info
 
-- doc what the lights mean, either in README.md or in the StoplightController javadoc. 
-- add configurability to the build environment, including user/host for deploying.
-- add configurability to the runtime environment, possibly including a Main class that can be tested.
-- switch from external process impl to the USB impl of the stoplight, or make the external process impl handle animation better, because when two lights are flashing the sequences obviously slow each other down.
-- Add support for an onDeviceChange event fired from the stoplight, to detect a user change caused by pushing the device button.  Then detecting one button push can snooze any animations, pushing twice can turn the light off for 30 minutes, and pushing it a third time can restore things to normal.
-- When the stoplight-stop.sh script runs, it errors when there is not service already running.
-- When running './gradlew deploy', the build seems to succeed but then hang.
-- JenkinsProjectSet and JenkinsProject could be smarter about retaining state, up to a point.  When we have a specific job that we know is running, we can hold on to its URL and poll only that until we learn that it's finished.  Then we have to throw it away and go back to the project to get status (because it might have a new job kicked off immediately). But this smartness would avoid some unnecessary network I/O when jobs are running.
-- after certain repeated network errors (503) the controller seems to get hung.
+- [ToDo List](doc/TODO.md)
 
