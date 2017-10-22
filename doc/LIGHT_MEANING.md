@@ -1,4 +1,4 @@
-# What Do All The Lights Mean
+# What Do All The Lights Mean?
 This system uses three colored lights to monitor two different builds, or two different groups of builds.  *Reading the
 status is intuitive with a little experience*, but a little tedious to explain. 
 
@@ -27,7 +27,7 @@ lights can be interpreted as:
 
 ## Status Examples
 
-| Stoplight                                                                                                                           | Meaning                                                                                                          |
+| Stoplight Status                                                                                                                    | Meaning                                                                                                          |
 |:-----------------------------------------------------------------------------------------------------------------------------------:| ---------------------------------------------------------------------------------------------------------------- |
 | ![Solid Green](stoplight_diagram_solid_green.png?raw=true "Solid Green")                                                            | All is well. All builds succeeded.                                                                               |
 | ![Flashing Green](stoplight_diagram_flashing_green.png?raw=true "Flashing Green")                                                   | All is well. One or more builds are running.                                                                     |

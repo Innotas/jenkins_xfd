@@ -14,17 +14,25 @@ for the software that monitors Jenkins and controlling the lights.
 
 Once configured, the stoplight sits on a desk or prominent place and shows the real-time status of your most important
 (and separately your less important) continuous integration builds, 24/7 non-stop.  No PC is required.  The Raspberry
-Pi controller connects via wifi or wired ethernet connection to monitor the state of your build system. 
+Pi controller connects via wifi or wired ethernet connection to monitor the state of your build system.
+ 
+See [What Do All the Lights Mean?](doc/LIGHT_MEANING.md) for an explanation of the status values.
 
 ## I Want One! What Do I Need?
 
 To build your own extreme feedback device, you'll need a light and a Raspberry Pi to control it. My specific products
 ordered:   
 
-- A [USB Traffic Light](https://shop.strato.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F43%2FSubProducts%2F43-2) from cleware.de. This was the most expensive piece. I chose this model because (a) it's well built and had the look that I wanted, and (b) at the time I specifically wanted to learn to control devices via USB using Java. You can definitely build your own for cheaper, like using the GPIO to control individual LEDs or relays.   
-- A [Raspberry Pi with Enclosure](https://www.amazon.com/gp/product/B01DMFQZXK/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) from amazon.com. These Vilros kits are great about coming with a complete kit, everything you need (including power supply) except an SD card.
+- A [USB Traffic Light](https://shop.strato.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F43%2FSubProducts%2F43-2) from cleware.de. This was the most expensive piece. I chose this model because (a) it's well built and had the look that I wanted, and (b) at the time I specifically wanted to learn to control devices via USB using Java. This could definitely build custom built for much cheaper, like using the Raspberry's GPIO to control individual LEDs or relays.   
+- A [Raspberry Pi with Enclosure](https://www.amazon.com/gp/product/B01DMFQZXK/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1) from amazon.com. These Vilros kits are the best value I've seen because they come with a complete kit, everything you need (including power supply) except an SD card.
 - [8GB MicroSD Card](https://www.amazon.com/gp/product/B007KFXICK/ref=oh_aui_detailpage_o00_s00?ie=UTF8&psc=1), also from amazon.com. You can also get one [with NOOBS already installed](https://www.amazon.com/gp/product/B00VD614PU/ref=oh_aui_detailpage_o06_s00?ie=UTF8&psc=1) to save a step.
 
+With this configuration, the stoplight runs on 5v USB power supplied by the Raspberry Pi, so no additional power supply 
+is needed.
+
+You also need a continuous integration server running [Jenkins](https://jenkins.io/). The rest of this document will explain how to set up a 
+Raspberry Pi and deploy the code from this repository to it, so monitor Jenkins and reflect its status.
+                                                  
 ## Setting Up the Raspberry Pi
 
 The controller service built by this repository runs as a Java process, so the only hard requirement is that the 
@@ -78,6 +86,11 @@ Second, run the build to deploy to this target.
     ./gradlew deploy
 
 Note: This build task is often hanging on the client side on Windows machines, even though it successfully deploys.
+
+## Setting Up Jenkins
+No special plugins are required in the Jenkins installation. The controller uses the RESTful endpoints natively exposed
+by Jenkins. However the [How to Configure Jenkins](doc/JENKINS.md) page explains how to designate High and Medium
+priority builds.
 
 ## Additional Info
 
