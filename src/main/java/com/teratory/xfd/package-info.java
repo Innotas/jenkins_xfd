@@ -7,6 +7,6 @@
  * </p>
  *
  * @author jstokes
- * @see com.teratory.xfd.stoplight.StoplightController stoplight.StoplightController, the main class for this project.
+ * @see com.teratory.xfd.stoplight.JenkinsStoplightController stoplight.JenkinsStoplightController, the main class for this project.
  */
 package com.teratory.xfd;

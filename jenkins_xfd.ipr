@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -12,23 +11,16 @@
       <entry name="!?*.java" />
       <entry name="!?*.groovy" />
     </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-    </annotationProcessing>
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="jenkins_xfd_main" target="1.9" />
+      <module name="jenkins_xfd_test" target="1.9" />
+    </bytecodeTargetLevel>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
+  <component name="Encoding" addBOMForNewFiles="with NO BOM" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
@@ -37,12 +29,13 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleJvm" value="9.0" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
           </set>
         </option>
+        <option name="useAutoImport" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
@@ -53,6 +46,12 @@
     <setting name="root" />
   </component>
   <component name="IdProvider" IDEtalkID="11DA1DB66DD62DDA1ED602B7079FE97C" />
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -73,9 +72,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/jenkins_xfd.iml" filepath="$PROJECT_DIR$/jenkins_xfd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jenkins_xfd_main.iml" filepath="$PROJECT_DIR$/jenkins_xfd_main.iml" group="jenkins_xfd" />
+      <module fileurl="file://$PROJECT_DIR$/jenkins_xfd_test.iml" filepath="$PROJECT_DIR$/jenkins_xfd_test.iml" group="jenkins_xfd" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_9" default="false" project-jdk-name="9.0" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
@@ -148,13 +149,13 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: junit:junit:4.12">
+    <library name="Gradle: junit:junit:4.13-beta-2">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.13-beta-2/2470c41ebd351f7edceac9eea7c414ac847a154/junit-4.13-beta-2.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.13-beta-2/82aeb67084890746098fe1319eef2fe8c65dd67a/junit-4.13-beta-2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.commons:commons-exec:1.3">

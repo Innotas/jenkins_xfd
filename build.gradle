@@ -34,7 +34,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Stoplight Controller',
                 //'Implementation-Version': version,
-                'Main-Class': 'StoplightController'
+                'Main-Class': 'com.teratory.xfd.stoplight.GitHubPrStoplightController'
     }
     baseName = project.name + '-all'
     from zipTree('lib/linux/com.codeminders.hidapi-armhf-1.0.jar')
@@ -52,7 +52,7 @@ remotes {
         host = 'stoplight'
         //host = '192.168.150.27'
         user = 'pi'
-        identity = file('c:/dev/system/cygwin/home/jstokes/.ssh/id_rsa')
+        //identity = file('c:/dev/system/cygwin/home/jstokes/.ssh/id_rsa')
     }
 }
 
