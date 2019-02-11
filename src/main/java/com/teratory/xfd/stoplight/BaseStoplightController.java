@@ -61,7 +61,7 @@ public abstract class BaseStoplightController {
             }
             catch (FetchStateException fse) {
                 Throwable cause = fse.getCause() != null ? fse.getCause() : fse;
-                getLogger().warn("Error fetching status: " + cause.getClass().getSimpleName() + ": " + cause.getMessage());
+                getLogger().warn("Error fetching status: " + cause.getClass().getSimpleName() + ": " + (cause.getMessage() != null ? cause.getMessage() : cause.toString()));
                 getLogger().debug("Error fetching status: " + cause.getClass().getSimpleName() + ": " + cause.getMessage(), cause);
                 newState = fse.getState();
             }

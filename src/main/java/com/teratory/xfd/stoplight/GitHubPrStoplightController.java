@@ -48,11 +48,12 @@ public class GitHubPrStoplightController extends BaseStoplightController {
         LightState green = LightState.SOLID;
 
         try {
-            if (gitHubConnector.hasPullRequestsAssignedToMe()) {
-                red = LightState.FLASHING;
+            int assignedToMeCount = gitHubConnector.getPullRequestsAssignedToMeCount();
+            if (assignedToMeCount > 0) {
+                red = assignedToMeCount > 1 ? LightState.FAST_FLASHING : LightState.FLASHING;
                 green = LightState.OFF;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new FetchStateException(new StopLightState(red, yellow, green), e);
         }
         return new StopLightState(red, yellow, green);

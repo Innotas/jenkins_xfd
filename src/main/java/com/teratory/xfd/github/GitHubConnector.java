@@ -25,6 +25,7 @@ public class GitHubConnector {
 
     private final String userName;
     private String apiKey;
+    protected String apiHostName = "api.github.com";
 
     public GitHubConnector(String apiKey) {
         this.apiKey = apiKey;
@@ -36,12 +37,16 @@ public class GitHubConnector {
         }
     }
 
+    public int getPullRequestsAssignedToMeCount() throws IOException {
+        return getPullRequestsAssignedToMe().size();
+    }
+
     public boolean hasPullRequestsAssignedToMe() throws IOException {
         return !getPullRequestsAssignedToMe().isEmpty();
     }
 
     protected GraphQLRequestEntity.RequestBuilder createRequestBuilder() throws GraphQLException {
-        String gitHubApiUrl = "https://api.github.com/graphql";
+        String gitHubApiUrl = "https://" + apiHostName + "/graphql";
         try {
             return GraphQLRequestEntity.Builder()
                     .url(gitHubApiUrl)
@@ -57,44 +62,60 @@ public class GitHubConnector {
     }
 
     protected List<PullRequest> getPullRequestsAssignedToMe() throws IOException {
-        GraphQLRequestEntity request = createRequestBuilder()
-                .request(
-                    "query { " +
-                        "search(query:\"assignee:" + userName + " is:pr is:open\", type:ISSUE,last:100) { " +
-                            "edges { " +
-                                "node { " +
-                                    "... on PullRequest { " +
-                                        "title " +
-                                        "url " +
-                                        "number " +
-                                        "assignees(last:100) { " +
-                                            "edges { " +
-                                                "node { " +
-                                                    "login " +
+        try {
+            GraphQLRequestEntity request = createRequestBuilder()
+                    .request(
+                        "query { " +
+                            "search(query:\"assignee:" + userName + " is:pr is:open\", type:ISSUE,last:100) { " +
+                                "edges { " +
+                                    "node { " +
+                                        "... on PullRequest { " +
+                                            "title " +
+                                            "url " +
+                                            "number " +
+                                            "assignees(last:100) { " +
+                                                "edges { " +
+                                                    "node { " +
+                                                        "login " +
+                                                    "} " +
                                                 "} " +
                                             "} " +
                                         "} " +
                                     "} " +
                                 "} " +
                             "} " +
-                        "} " +
-                    "}"
-                )
-                // It would be great to use the annotations provided by americanexpress/nodes, but their syntax does not
-                // see to have a way to represent the "... on PullRequest" part, even using their InputObject.  Until we
-                // can, we'll use annotations to represent the response format while passing the query in as a string.
-                //.request(PrsAssignedToMeQuery.class)
-                .build();
-        // System.err.println("req=" + request);
-        GraphQLResponseEntity<PrsAssignedToMeQuery> response = new GraphQLTemplate().query(request,PrsAssignedToMeQuery.class);
-        if (response.getErrors() == null) {
-            List<PullRequest> output = new ArrayList<>();
-            for (Edge pr : response.getResponse().search.edges) {
-                output.add(new PullRequest(pr.node.number, pr.node.title, pr.node.url));
+                        "}"
+                    )
+                    // It would be great to use the annotations provided by americanexpress/nodes, but their syntax does not
+                    // see to have a way to represent the "... on PullRequest" part, even using their InputObject.  Until we
+                    // can, we'll use annotations to represent the response format while passing the query in as a string.
+                    //.request(PrsAssignedToMeQuery.class)
+                    .build();
+            // System.err.println("req=" + request);
+            GraphQLResponseEntity<PrsAssignedToMeQuery> response = new GraphQLTemplate().query(request,PrsAssignedToMeQuery.class);
+            if (response.getErrors() == null) {
+                List<PullRequest> output = new ArrayList<>();
+                for (Edge pr : response.getResponse().search.edges) {
+                    output.add(new PullRequest(pr.node.number, pr.node.title, pr.node.url));
+                }
+                return output;
+            } else {
+                throw new GraphQLException(Arrays.asList(response.getErrors()).toString());
             }
-            return output;
-        } else {
-            throw new GraphQLException(Arrays.asList(response.getErrors()).toString());
+        }
+        catch (GraphQLException e) {
+            // As a special case, we sometimes get exceptions that look exactly like this:
+            //     GraphQLException{message='null', status='null', description='api.github.com', errors=null}
+            // Since this doesn't tell us much, let's detect this case and log the stacktrace at least before
+            // re-throwing.
+            if (
+                    e.getMessage() == null && e.getStatus() == null && e.getErrors() == null
+                    && (e.getDescription() == null || apiHostName.equals(e.getDescription()))
+               ) {
+                // We could wrap this stacktrace into the message or description instead of using stderr.
+                e.printStackTrace();
+            }
+            throw e;
         }
     }
 
